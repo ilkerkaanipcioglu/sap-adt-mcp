@@ -6,6 +6,13 @@ adheres to semantic versioning once it reaches 1.0.0.
 
 ## [Unreleased]
 
+### Removed
+
+- **Local control panel.** `adt_open_panel` / `adt_close_panel`, the `/panel`
+  command, the `panel` config block and the `SAP_ADT_MCP_PANEL` /
+  `SAP_ADT_MCP_PANEL_PORT` env vars are gone. The MCP no longer opens a listening
+  socket under any setting. A leftover `panel` key in `config.json` is ignored.
+
 ### Fixed
 
 - **`adt_search_objects` 406 said nothing about the real cause (#117).** An
