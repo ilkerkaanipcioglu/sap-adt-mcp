@@ -28,6 +28,24 @@ adheres to semantic versioning once it reaches 1.0.0.
   hint pointing at the actual problem (use a TADIR-style code, e.g. `CLAS/OC`,
   `PROG/P`, `DDLS/DF`, or omit `objectType`) instead of leaving the caller to
   chase an Accept header that was never the cause.
+### Removed
+
+- **Local control panel.** `adt_open_panel` / `adt_close_panel`, the `/panel`
+  command, the `panel` config block and the `SAP_ADT_MCP_PANEL` /
+  `SAP_ADT_MCP_PANEL_PORT` env vars are gone. The MCP no longer opens a listening
+  socket under any setting. A leftover `panel` key in `config.json` is ignored.
+
+### Fixed
+
+- **`adt_search_objects` 406 said nothing about the real cause (#117).** An
+  `objectType` the backend does not know (e.g. `BADII`) is rejected with 406
+  `ExceptionResourceNotAcceptable` / `SADT_RESOURCE-037`, "The message content is
+  not acceptable" — which reads like content negotiation but is filter-value
+  validation: it reproduces unchanged with `Accept: */*`. The error now carries a
+  hint naming the rejected value and pointing at TADIR-style codes, so the caller
+  stops chasing the `Accept` header. `errorResult` gained a call-site `hint`
+  fallback for messages too generic to key a global rule on; a matching global
+  hint still wins.
 
 ## [0.8.58]
 
